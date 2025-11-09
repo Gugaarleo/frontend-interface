@@ -31,26 +31,16 @@ O app abrirá em http://localhost:5173.
 ### Fluxo de uso
 - Cadastro: preencha nome, e-mail e senha e envie (POST /register)
 - Login: informe e-mail e senha (POST /login). O token JWT é salvo no LocalStorage.
-- Dashboard (protegido): CRUD em `/items` usando o token (GET/POST/PUT/DELETE). Há botão de logout.
 
 ### Comportamento de autenticação
 - Token é adicionado automaticamente no header Authorization (Bearer).
 - Se o token expirar ou a API retornar 401, o app faz logout e redireciona para login com toast de aviso.
-- O JWT é decodificado para ler `exp` e agendar auto-logout quando aplicável.
+- O JWT é decodificado para ler `JWT_EXPIRES_IN` e agendar auto-logout quando aplicável.
 
 ### Ajustes de integração
 - Base URL: `VITE_API_URL`.
-- Endpoints esperados:
-	- `POST /register` { name, email, password }
-	- `POST /login` { email, password } -> { token }
-	- `GET /items` -> Array ou { items: [] }
-	- `POST /items` { name, description? }
-	- `PUT /items/:id` { name, description? }
-	- `DELETE /items/:id`
 
-Se seus campos diferirem, ajuste os componentes `ItemForm`, `ItemList` e a página `Dashboard`.
-
-### Boas práticas implementadas
+### Funcionalidades implementadas
 - Feedback visual (toasts) para sucesso/erro
 - Loading ao buscar e enviar dados
 - Tratamento consistente de erros da API
@@ -58,7 +48,7 @@ Se seus campos diferirem, ajuste os componentes `ItemForm`, `ItemList` e a pági
 
 ### Teste de expiração do token
 Para testar o redirecionamento por expiração, configure o backend para tokens com poucos segundos de validade. O app irá:
-1) Agendar auto-logout baseado em `exp` do JWT;
+1) Agendar auto-logout baseado em `JWT_EXPIRES_IN` do JWT;
 2) Em requisições subsequentes com 401, forçar logout e redirecionar.
 
 ### Scripts úteis
@@ -66,8 +56,5 @@ Para testar o redirecionamento por expiração, configure o backend para tokens 
 - `npm run build` — build de produção
 - `npm run preview` — preview do build
 - `npm run lint` — análise estática
-
-### Licença
-Uso educacional.
 
 # frontend-interface
